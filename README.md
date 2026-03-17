@@ -147,11 +147,11 @@ TASK [Copy test file] **********************************************************
 changed: [vm1]
 changed: [vm2]
 
-TASK [Create groups] ***********************************************************
+TASK [Create user groups] ******************************************************
 changed: [vm1]
 changed: [vm2]
 
-TASK [Create users] ************************************************************
+TASK [Create users with home directories] **************************************
 changed: [vm1]
 changed: [vm2]
 
