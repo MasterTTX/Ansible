@@ -1,0 +1,54 @@
+---
+- name: Netology ML homework
+  hosts: netology-ml
+  become: true
+
+  vars:
+    packages:
+      - net-tools
+      - git
+      - tree
+      - htop
+      - mc
+      - vim
+    users:
+      - devops_1
+      - test_1
+
+  tasks:
+    - name: Check hosts availability
+      ansible.builtin.ping:
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install packages
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Copy test file
+      ansible.builtin.copy:
+        src: test.txt
+        dest: /tmp/test.txt
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Create user groups
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ users }}"
+
+    - name: Create users with home directories
+      ansible.builtin.user:
+        name: "{{ item }}"
+        group: "{{ item }}"
+        create_home: yes
+        shell: /bin/bash
+        state: present
+      loop: "{{ users }}"
