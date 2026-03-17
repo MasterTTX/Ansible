@@ -84,17 +84,23 @@ ansible_ssh_private_key_file=~/.ssh/id_rsa
       ansible.builtin.copy:
         src: test.txt
         dest: /tmp/test.txt
+        owner: root
+        group: root
+        mode: '0644'
 
-    - name: Create groups
+    - name: Create user groups
       ansible.builtin.group:
         name: "{{ item }}"
+        state: present
       loop: "{{ users }}"
 
-    - name: Create users
+    - name: Create users with home directories
       ansible.builtin.user:
         name: "{{ item }}"
         group: "{{ item }}"
         create_home: yes
+        shell: /bin/bash
+        state: present
       loop: "{{ users }}"
 ```
 
